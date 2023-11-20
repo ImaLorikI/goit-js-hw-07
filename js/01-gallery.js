@@ -13,7 +13,7 @@ function onClick(evt) {
   if (target.nodeName !== "IMG") {
     return;
   }
-  const imgalt = target.alt; 
+  const imgalt = target.alt;
   const curruntItems = galleryItems.find(
     ({ description }) => description === imgalt
   );
@@ -21,13 +21,16 @@ function onClick(evt) {
   const instance = basicLightbox.create(`
     <img class="img-photo" src="${curruntItems.original}" alt="${curruntItems.description}" width="1280" height="600" >
 `);
-    instance.show();
+  instance.show();
 
-    window.addEventListener('keydown', (evt) => {
-        if (evt.key === 'Escape') {
-            instance.close();
-        }
-        });
+  window.addEventListener('keydown', onKeydown);
+  function onKeydown(evt) { 
+    if (evt.code === 'Escape') { 
+      instance.close();
+      window.removeEventListener('keydown', onKeydown); 
+    }
+  }
 }
+
 galery.insertAdjacentHTML('beforeend', markup);
 galery.addEventListener('click', onClick);
